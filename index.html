@@ -26,6 +26,12 @@
             overflow-y: scroll;
         }
 
+
+.lastname {
+  display: inline;
+}
+
+
         .profile-section {
             position: fixed;
             top: 0;
@@ -66,7 +72,7 @@
 
         .profile-details h1 {
             margin: 0;
-            font-size: 2em;
+            font-size: 2.5em;
             margin-bottom: 30px;
         }
 
@@ -115,6 +121,7 @@
 
        .gallery img {
     width: 100%;
+    max-width: 100%;
     height: auto;
     cursor: pointer;
     transition: transform 0.3s ease-in-out, opacity 1s ease-in-out;
@@ -134,7 +141,7 @@
         .modal {
             display: none;
             position: fixed;
-            z-index: 10;
+            z-index: 12;
             left: 0;
             top: 0;
             width: 100%;
@@ -143,6 +150,45 @@
             justify-content: center;
             align-items: center;
         }
+
+/* Overlay inizialmente nascosto */
+.swipe-overlay {
+  position: absolute;        /* si posiziona sopra l'immagine */
+  top: 50%;                  /* centrato verticalmente */
+  left: 50%;                 /* centrato orizzontalmente */
+  transform: translate(-50%, -50%) scale(0.8);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1em;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;      /* per non cliccare su di esso */
+  z-index: 14;
+}
+
+/* Classe che mostra l’overlay */
+.swipe-overlay.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Mostra l’overlay solo su mobile */
+@media (max-width: 768px) {
+  .swipe-overlay {
+    display: block;
+  }
+}
+
+/* Su schermi più grandi di 768px, nascondilo del tutto */
+@media (min-width: 769px) {
+  .swipe-overlay {
+    display: none;
+  }
+}
+
 
         .modal img {
     max-width: 90vw;
@@ -217,33 +263,56 @@
             background-color: transparent;
         }
 
-        /* Responsive Styles */
+ 
+
+/* Responsive Styles */
         @media (max-width: 768px) {
+    .gallery-container {
+        margin-left: 0;       /* Elimina lo spazio a sinistra */
+        padding: 10px;       /* Riduci il padding, se vuoi */
+        width: 100% !important; /* Forza la larghezza al 100% */
+        box-sizing: border-box;
+    }
+  .lastname {
+    display: block; 
+  }
+
+.nav-button {
+        display: none;
+    }
+.zoom-button {
+        display: none;
+    }
+#profile-overlay {
+        display: none;
+    }
             body {
                 flex-direction: column;
             }
 
-            .profile-section {
-                position: relative;
-                width: 100%;
-                height: auto;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px;
-                border-bottom: 1px solid gray;
-            }
+  .profile-section {
+    position: relative;
+    width: 100%;
+    min-height: 180px; /* Un minimo di altezza per dare spazio all'immagine in basso */
+    padding: 20px;
+    box-sizing: border-box; 
+  }
+
+
 
             .divider-line {
                 display: none;
             }
 
-            .profile-section img {
-                width: 80px;
-                height: 80px;
-                margin: 0;
-            }
+  .profile-section img {
+    position: absolute;
+    bottom: 0px;   /* Distanza dal bordo inferiore */
+    right: 20px;    /* Distanza dal bordo destro */
+    width: 115px;    /* Dimensioni a piacere */
+    height: 115px;
+    border-radius: 50%; /* Se vuoi il cerchio */
+    object-fit: cover;  /* Se vuoi adattare l’immagine al cerchio */
+  }
 
             .profile-details {
                 text-align: left;
@@ -251,17 +320,23 @@
             }
 
             .profile-details h1 {
-                font-size: 1.5em;
+                font-size: 2em !important;
+        margin-top: 5px;    /* o il valore che preferisci */
+        margin-bottom: 13px; /* idem */
+        line-height: 1.2;   /* più compatto rispetto ad esempio a 1.5 o 1.6 */
             }
 
             .profile-details h2 {
                 font-size: 1em;
+        margin-top: 5px;    /* o il valore che preferisci */
+        margin-bottom: 5px; /* idem */
+        line-height: 1.2;   /* più compatto rispetto ad esempio a 1.5 o 1.6 */
             }
 
             .gallery-container {
                 margin: 0;
                 width: 100%;
-                padding: 10px;
+                padding: 0px;
             }
 
             /* Mantiene tre colonne anche su schermi più piccoli */
@@ -271,8 +346,8 @@
             }
 
             .modal img {
-                max-width: 80vw;
-                max-height: 80vh;
+                max-width: 90vw;
+                max-height: 90vh;
             }
         }
 
@@ -316,7 +391,7 @@
     display: flex;
     flex-direction: column;  /* Disporre i pulsanti uno sopra l'altro */
     align-items: flex-end;
-    z-index: 5;
+    z-index: 11;
     background-color: rgba(34, 34, 34, 0.0);
     padding: 10px;
     border-radius: 8px;  /* Aggiungi un po' di arrotondamento */
@@ -459,7 +534,7 @@ opacity: 0;  /* Inizialmente invisibile */
     
 
     <div class="profile-details">
-        <h1>Emanuele Terlati</h1>
+        <h1>Emanuele <span class="lastname">Terlati</span></h1>
         <h2>Architetto</h2>
         <h3> </h3>
         <h3>Slideshow Portfolio</h3>
@@ -606,6 +681,11 @@ opacity: 0;  /* Inizialmente invisibile */
 <div id="loadingOverlay" class="loading-overlay">
     <div class="loading-spinner"></div>
 </div>
+
+<!-- Overlay per suggerire lo swipe -->
+<div id="swipeOverlay" class="swipe-overlay">
+    <span>&lt  swipe  &gt</span>
+  </div>
 
     <img id="modalImage" src="">
 
@@ -769,6 +849,7 @@ let currentY = 0;
     document.getElementById("modalImage").src = `https://raw.githubusercontent.com/terlatiarchitetto/Portfolio/refs/heads/main/Foto/${imageSrc}`;
     document.getElementById("modal").style.display = "flex";
     currentImageIndex = modalImageList.indexOf(imageSrc) + 1;
+    document.body.style.overflow = "hidden";
     
     // Ripristina lo zoom e la posizione
     currentZoom = 1;
@@ -783,10 +864,19 @@ let currentY = 0;
     } else {
         youtubeLinkArea.style.display = "none";
     }
+// Mostra l’overlay di swipe (solo su mobile, grazie alle media query)
+    const swipeOverlay = document.getElementById("swipeOverlay");
+    swipeOverlay.classList.add("show");
+
+    // Nascondi l’overlay automaticamente dopo 2.5 secondi (scegli tu il tempo)
+    setTimeout(() => {
+      swipeOverlay.classList.remove("show");
+    }, 2500);
 }
 
     function closeModal() {
         document.getElementById("modal").style.display = "none";
+        document.body.style.overflow = "";
     }
 
 function nextImage(event) {
@@ -1061,6 +1151,59 @@ function scrollToTop() {
     });
 }
 
+    // -------------------- SWIPE PER CAMBIARE IMMAGINE --------------------
+
+
+// Variabile per riconoscere se l'utente sta usando un solo dito per tutto il gesto.
+let oneFinger = false;
+
+const modal = document.getElementById("modal");
+
+// Aggiungiamo gli event listener
+modal.addEventListener("touchstart", handleTouchStart, false);
+modal.addEventListener("touchmove", handleTouchMove, false);
+modal.addEventListener("touchend", handleTouchEnd, false);
+
+function handleTouchStart(e) {
+  // Se c'è esattamente 1 dito, prepariamo la swipe logic
+  if (e.touches.length === 1) {
+    oneFinger = true;
+    startX = e.touches[0].clientX;
+  } else {
+    // Se parte subito con 2 o più dita, disabilitiamo lo swipe per questa gesture
+    oneFinger = false;
+  }
+}
+
+function handleTouchMove(e) {
+  // Se durante il movimento noto che le dita diventano 2 o più, disabilito lo swipe
+  if (e.touches.length > 1) {
+    oneFinger = false;
+  }
+}
+
+function handleTouchEnd(e) {
+  // Se per tutto il gesto abbiamo avuto 1 solo dito, allora facciamo lo swipe
+  if (oneFinger && e.changedTouches.length === 1) {
+    endX = e.changedTouches[0].clientX;
+    handleSwipe();
+  }
+  // Reimpostiamo oneFinger in vista del prossimo tocco
+  oneFinger = false;
+}
+
+function handleSwipe() {
+  const swipeThreshold = 50; // soglia minima in px per considerarlo uno swipe
+  const deltaX = endX - startX;
+
+  if (deltaX > swipeThreshold) {
+    // swipe da sinistra verso destra => immagine precedente
+    prevImage(new Event("click"));
+  } else if (deltaX < -swipeThreshold) {
+    // swipe da destra verso sinistra => immagine successiva
+    nextImage(new Event("click"));
+  }
+}
 </script>
 
 </body>
